@@ -1,0 +1,35 @@
+<!-- ajust_app/templates/ajust_app/participant_response.html -->
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ participant.name }} - 回答</title>
+</head>
+<body>
+    <h1>{{ event.name }}</h1>
+    <h2>{{ participant.name }}さんの回答</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ formset.management_form }}
+        <table>
+            <tr>
+                <th>日付</th>
+                <th>回答</th>
+            </tr>
+            {% for form in formset %}
+                <tr>
+                    <td>{{ form.instance.date.date }}</td>
+                    <td>
+                        {{ form.availability }}
+                        {{ form.id }}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+        <button type="submit">回答を送信</button>
+    </form>
+    <a href="{% url 'event_detail' event.id %}">イベント詳細に戻る</a>
+</body>
+</html>
