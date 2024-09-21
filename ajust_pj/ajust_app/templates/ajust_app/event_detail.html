@@ -1,0 +1,47 @@
+<!-- ajust_app/templates/ajust_app/event_detail.html -->
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ event.name }} - 詳細</title>
+</head>
+<body>
+    <h1>{{ event.name }}</h1>
+    <h2>候補日と参加状況</h2>
+    <table>
+        <tr>
+            <th>日付</th>
+            <th>◯</th>
+            <th>✕</th>
+            <th>△</th>
+        </tr>
+        {% for status in date_status %}
+            <tr>
+                <td>{{ status.date.date }}</td>
+                <td>{{ status.yes }}</td>
+                <td>{{ status.no }}</td>
+                <td>{{ status.maybe }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+    <h2>参加者一覧</h2>
+    <ul>
+        {% for participant in participants %}
+            <li>
+                {{ participant.name }}
+                <a href="{% url 'participant_response' event.id participant.id %}">回答する</a>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <h2>新規参加者登録</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ participant_form.as_p }}
+        <button type="submit">登録</button>
+    </form>
+</body>
+</html>
